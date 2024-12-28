@@ -1,0 +1,129 @@
+﻿@page "/makbuz-edit"
+@page "/makbuz-edit/{Id:int}"
+@using SiteYonetimApp.Models
+@using SiteYonetimApp.Services
+@inject IGeneralService GeneralService
+@inject NavigationManager Navigation
+
+<h3>@(IsEditMode ? "Makbuz Güncelle" : "Yeni Makbuz Ekle")</h3>
+
+<div class="form-group">
+    <label for="makbuzNo">Makbuz No</label>
+    <input type="number" id="makbuzNo" class="form-control" @bind="Makbuz.MakbuzNo" />
+</div>
+<div class="form-group">
+    <label for="ad">Adı</label>
+    <input type="text" id="ad" class="form-control" @bind="Makbuz.Ad" />
+</div>
+<div class="form-group">
+    <label for="soyad">Soyadı</label>
+    <input type="text" id="soyad" class="form-control" @bind="Makbuz.Soyad" />
+</div>
+<div class="form-group">
+    <label for="daireNo">Daire No</label>
+    <input type="text" id="daireNo" class="form-control" @bind="Makbuz.DaireNo" />
+</div>
+
+<div class="form-group">
+    <label for="blok">Blok Adı</label>
+    <select id="blok" class="form-control" @onchange="OnBlokChanged">
+        <option value="">Blok Seçin</option>
+        @foreach (var blok in BlokListesi)
+        {
+            <option value="@blok.Id">@blok.BlokName</option>
+        }
+    </select>
+</div>
+<div class="form-group">
+    <label for="aidatDonemi">Aidat Dönemi</label>
+    <input type="date" id="aidatDonemi" class="form-control" @bind="Makbuz.AidatDonemi" />
+</div>
+<div class="form-group">
+    <label for="aidatTutari">Aidat Tutarı</label>
+    <input type="number" id="aidatTutari" class="form-control" @bind="Makbuz.AidatTutari" />
+</div>
+<div class="form-group">
+    <label for="demirbasDonemi">Demirbaş Dönemi</label>
+    <input type="date" id="demirbasDonemi" class="form-control" @bind="Makbuz.Demirbasonemi" />
+</div>
+<div class="form-group">
+    <label for="demirbasTutari">Demirbaş Tutarı</label>
+    <input type="number" id="demirbasTutari" class="form-control" @bind="Makbuz.DemirbasTutari" />
+</div>
+<div class="form-group">
+    <label for="toplamTutar">Toplam Tutar</label>
+    <input type="number" id="toplamTutar" class="form-control" @bind="Makbuz.ToplamTutar" />
+</div>
+<div class="form-group form-check-inline">
+    <div class="form-check">
+        <input type="checkbox" id="banka" class="form-check-input" @bind="Makbuz.Banka" />
+        <label class="form-check-label" for="banka">Banka mı?</label>
+    </div>
+    <div class="form-check">
+        <input type="checkbox" id="nakit" class="form-check-input" @bind="Makbuz.Nakit" />
+        <label class="form-check-label" for="nakit">Nakit mi?</label>
+    </div>
+</div>
+
+<button class="btn btn-primary" @onclick="SaveMakbuz">@(IsEditMode ? "Güncelle" : "Ekle")</button>
+<button class="btn btn-secondary" @onclick="Cancel">İptal</button>
+
+@code {
+    [Parameter] public int? Id { get; set; }
+
+    private Makbuz Makbuz = new Makbuz();
+    private List<Makbuz> MakbuzListesi = new List<Makbuz>();
+    private List<Blok> BlokListesi = new List<Blok>();
+    private bool IsEditMode => Id.HasValue;
+
+    protected override async Task OnInitializedAsync()
+    {
+        BlokListesi = await GeneralService.GetBloksAsync() ?? new List<Blok>();
+
+        if (IsEditMode)
+        {
+            // Eğer güncelleme işlemi ise, ilgili makbuzu al
+            MakbuzListesi = await GeneralService.GetMakbuzlarAsync() ?? new List<Makbuz>();
+            Makbuz = MakbuzListesi.FirstOrDefault(m => m.Id == Id) ?? new Makbuz();
+            Makbuz.Blok = BlokListesi.FirstOrDefault(b => b.Id == Makbuz.BlokId);
+        }
+    }
+
+    private async Task SaveMakbuz()
+    {
+        Makbuz.Blok = BlokListesi.FirstOrDefault(b => b.Id == Makbuz.BlokId);
+        Makbuz.OdemeyiAlanAd = "Nurol";
+        Makbuz.OdemeyiAlanSoyad = "Balcı";
+        Makbuz.TahsilEtmeText = "Tahsil Edilmiştir";
+        Makbuz.OdemeyiAlanImza = "nurol.balci";
+        if (IsEditMode)
+        {
+            MakbuzListesi = await GeneralService.GetMakbuzlarAsync() ?? new List<Makbuz>();
+            var index = MakbuzListesi.FindIndex(m => m.Id == Makbuz.Id);
+            if (index != -1)
+            {
+                MakbuzListesi[index] = Makbuz;
+                await GeneralService.SaveMakbuzlarListAsync(MakbuzListesi);
+            }
+        }
+        else
+        {
+            Makbuz.Id = MakbuzListesi.Any() ? MakbuzListesi.Max(m => m.Id) + 1 : 1;
+            MakbuzListesi.Add(Makbuz);
+            await GeneralService.AddMakbuzAsync(Makbuz);
+        }
+        Navigation.NavigateTo("/makbuzlar");
+    }
+
+    private void Cancel()
+    {
+        Navigation.NavigateTo("/makbuzlar");
+    }
+
+    private void OnBlokChanged(ChangeEventArgs e)
+    {
+        var selectedBlokId = int.Parse(e.Value.ToString());
+        Makbuz.Blok = BlokListesi.FirstOrDefault(b => b.Id == selectedBlokId);
+        Makbuz.BlokId = BlokListesi.FirstOrDefault(b => b.Id == selectedBlokId).Id;
+    }
+}

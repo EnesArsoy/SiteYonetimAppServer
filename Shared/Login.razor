@@ -1,0 +1,47 @@
+﻿@inject AuthenticationService AuthService
+@inject NavigationManager NavigationManager
+@using Microsoft.AspNetCore.Components
+@using SiteYonetimAppServer.Services;
+@page "/login"
+@if (AuthService.IsLoggedIn)
+{
+    <h3>Hoş Geldiniz, @AuthService.CurrentUser.UserName!</h3>
+    <button @onclick="Logout">Çıkış Yap</button>
+}
+else
+{
+    <h3>Giriş Yap</h3>
+    <EditForm Model="@loginModel" OnValidSubmit="HandleLogin">
+        <InputText @bind-Value="loginModel.UserName" placeholder="Kullanıcı Adı" />
+        <InputText @bind-Value="loginModel.Password" type="password" placeholder="Şifre" />
+        <button type="submit">Giriş Yap</button>
+    </EditForm>
+}
+
+@code {
+    private LoginModel loginModel = new LoginModel();
+
+    private class LoginModel
+    {
+        public string UserName { get; set; }
+        public string Password { get; set; }
+    }
+
+    private void HandleLogin()
+    {
+        if (AuthService.Login(loginModel.UserName, loginModel.Password))
+        {
+            NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            // Hatalı giriş işlemi
+        }
+    }
+
+    private void Logout()
+    {
+        AuthService.Logout();
+        NavigationManager.NavigateTo("/");
+    }
+}

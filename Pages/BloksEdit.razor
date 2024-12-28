@@ -1,0 +1,59 @@
+﻿@page "/bloks-edit"
+@page "/bloks-edit/{Id:int}"
+@using SiteYonetimApp.Services;
+@inject IGeneralService GeneralService
+@inject NavigationManager Navigation
+
+<h3>@(IsEditMode ? "Blok Güncelle" : "Yeni Blok Ekle")</h3>
+
+<div class="form-group">
+    <label for="blokName">Blok Adı</label>
+    <input type="text" id="blokName" class="form-control" @bind="Blok.BlokName" />
+</div>
+
+<button class="btn btn-primary" @onclick="SaveBlok">@(IsEditMode ? "Güncelle" : "Ekle")</button>
+<button class="btn btn-secondary" @onclick="Cancel">İptal</button>
+
+@code {
+    [Parameter] public int? Id { get; set; }
+
+    private Blok Blok = new Blok();
+    private List<Blok> BlokListesi = new List<Blok>();
+    private bool IsEditMode => Id.HasValue;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (IsEditMode)
+        {
+            // Eğer güncelleme işlemi ise, ilgili bloğu al
+            BlokListesi = await GeneralService.GetBloksAsync() ?? new List<Blok>();
+            Blok = BlokListesi.FirstOrDefault(b => b.Id == Id) ?? new Blok();
+        }
+    }
+
+    private async Task SaveBlok()
+    {
+        if (IsEditMode)
+        {
+            BlokListesi = await GeneralService.GetBloksAsync() ?? new List<Blok>();
+            var index = BlokListesi.FindIndex(b => b.Id == Blok.Id);
+            if (index != -1)
+            {
+                BlokListesi[index] = Blok;
+                await GeneralService.SaveBloksListsAsync(BlokListesi);
+            }
+        }
+        else
+        {
+            Blok.Id = BlokListesi.Any() ? BlokListesi.Max(b => b.Id) + 1 : 1;
+            BlokListesi.Add(Blok);
+            await GeneralService.AddBlokAsync(Blok);
+        }
+        Navigation.NavigateTo("/bloks");
+    }
+
+    private void Cancel()
+    {
+        Navigation.NavigateTo("/bloks");
+    }
+}

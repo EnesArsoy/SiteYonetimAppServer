@@ -1,0 +1,85 @@
+﻿
+@using SiteYonetimApp.Services;
+@using SiteYonetimAppServer.Services;
+@inject IGeneralService GeneralService
+@inject AuthenticationService AuthService
+@inject NavigationManager Navigation
+@page "/bloks"
+<h3>Blok Yönetimi</h3>
+<button class="btn btn-primary" @onclick="NavigateToAdd">Yeni Blok Ekle</button>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Blok Adı</th>
+                <th>İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (BlokListesi != null && BlokListesi.Any())
+            {
+                foreach (var blok in BlokListesi)
+                {
+                    <tr>
+                        <td>@blok.Id</td>
+                        <td>@blok.BlokName</td>
+                        <td>
+                            <button class="btn btn-warning btn-sm" @onclick="() => EditBlok(blok.Id)">Güncelle</button>
+                            <button class="btn btn-danger btn-sm" @onclick="() => DeleteBlok(blok.Id)">Sil</button>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="3" class="text-center">Kayıt bulunamadı.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@code {
+    private List<Blok> BlokListesi = new List<Blok>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CheckUser();
+        await LoadBloks();
+    }
+
+    private async Task CheckUser()
+    {
+        if (!AuthService.IsLoggedIn)
+        {
+            Navigation.NavigateTo("/login");
+        }
+    }
+
+    private async Task LoadBloks()
+    {
+        BlokListesi = await GeneralService.GetBloksAsync() ?? new List<Blok>();
+    }
+
+    private async Task DeleteBlok(int id)
+    {
+        var result = await GeneralService.DeleteBlok(id);
+        if (result)
+        {
+            await LoadBloks(); // Listeyi yeniden yükle
+        }
+    }
+
+    private void NavigateToAdd()
+    {
+        Navigation.NavigateTo("/bloks-edit");
+    }
+
+    private void EditBlok(int id)
+    {
+        Navigation.NavigateTo($"/bloks-edit/{id}");
+    }
+}

@@ -1,0 +1,118 @@
+﻿@using SiteYonetimApp.Models
+@using SiteYonetimApp.Services
+@using SiteYonetimAppServer.Services
+@inject IGeneralService GeneralService
+@inject IJSRuntime JSRuntime
+@inject AuthenticationService AuthService
+@inject NavigationManager Navigation
+@page "/makbuzlar"
+
+<h3>Makbuz Yönetimi</h3>
+<button class="btn btn-primary" @onclick="NavigateToAdd">Yeni Makbuz Ekle</button>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Makbuz No</th>
+                <th>Adı Soyadı</th>
+                <th>Daire No</th>
+                <th>Toplam Tutar</th>
+                <th>Blok Adı</th>
+                <th>Aidat Dönemi</th>
+                <th>Aidat Tutarı</th>
+                <th>Demirbaş Dönemi</th>
+                <th>Demirbaş Tutarı</th>
+                <th>Banka mı</th>
+                <th>Nakit mi</th>
+                <th>İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (MakbuzListesi != null && MakbuzListesi.Any())
+            {
+                foreach (var makbuz in MakbuzListesi)
+                {
+                    <tr>
+                        <td>@makbuz.Id</td>
+                        <td>@makbuz.MakbuzNo</td>
+                        <td>@makbuz.Ad @makbuz.Soyad</td>
+                        <td>@makbuz.DaireNo</td>
+                        <td>@makbuz.ToplamTutar</td>
+                        <td>@makbuz?.Blok?.BlokName</td>
+                        <td>@makbuz.AidatDonemi</td>
+                        <td>@makbuz.AidatTutari</td>
+                        <td>@makbuz.Demirbasonemi</td>
+                        <td>@makbuz.DemirbasTutari}</td>
+                        <td>@makbuz.Banka</td>
+                        <td>@makbuz.Nakit</td>
+                        <td>
+                            <button class="btn btn-warning btn-sm" @onclick="() => EditMakbuz(makbuz.Id)">Güncelle</button>
+                            <button class="btn btn-danger btn-sm" @onclick="() => DeleteMakbuz(makbuz.Id)">Sil</button>
+                            <button class="btn btn-success btn-sm" @onclick="() => DownloadPdf(makbuz)">PDF Oluştur</button>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5" class="text-center">Kayıt bulunamadı.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@code {
+    private List<Makbuz> MakbuzListesi = new List<Makbuz>();
+    protected override async Task OnInitializedAsync()
+    {
+        await CheckUser();
+        await LoadMakbuzlar();
+    }
+
+    private async Task CheckUser()
+    {
+        if (!AuthService.IsLoggedIn)
+        {
+            Navigation.NavigateTo("/login");
+        }
+    }
+
+    private async Task LoadMakbuzlar()
+    {
+        MakbuzListesi = await GeneralService.GetMakbuzlarAsync() ?? new List<Makbuz>();
+    }
+
+    private async Task DeleteMakbuz(int id)
+    {
+        var result = await GeneralService.DeleteMakbuz(id);
+        if (result)
+        {
+            await LoadMakbuzlar(); // Listeyi yeniden yükle
+        }
+    }
+
+    private void NavigateToAdd()
+    {
+        Navigation.NavigateTo("/makbuz-edit");
+    }
+
+    private void EditMakbuz(int id)
+    {
+        Navigation.NavigateTo($"/makbuz-edit/{id}");
+    }
+    private async Task DownloadPdf(Makbuz makbuz)
+    {
+        var pdfHelper = new PdfHelper();
+        byte[] pdfContent = pdfHelper.CreateReceiptPdf(makbuz);
+
+        var fileName = $"{makbuz.MakbuzNo}.pdf";
+        var base64Pdf = Convert.ToBase64String(pdfContent);
+        var dataUri = $"data:application/pdf;base64,{base64Pdf}";
+
+        await JSRuntime.InvokeVoidAsync("downloadFile", fileName, dataUri);
+    }
+}

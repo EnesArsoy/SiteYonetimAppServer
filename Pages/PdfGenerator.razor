@@ -1,0 +1,31 @@
+﻿@page "/pdf-generator"
+@using System.IO
+@inject IJSRuntime JSRuntime
+
+<h3>PDF Oluşturma</h3>
+
+<button @onclick="GeneratePdf">PDF Oluştur</button>
+<button @onclick="DownloadPdf">PDF İndir</button>
+
+@code {
+    private async Task GeneratePdf()
+    {
+        var pdfHelper = new PdfHelper();
+        byte[] pdfContent = pdfHelper.CreatePdf("Bu bir test PDF'sidir!");
+
+        // PDF dosyasını tarayıcıda açmak için base64'e dönüştürüp JS ile gösterelim.
+        var base64Pdf = Convert.ToBase64String(pdfContent);
+        await JSRuntime.InvokeVoidAsync("open", $"data:application/pdf;base64,{base64Pdf}", "_blank");
+    }
+    private async Task DownloadPdf()
+    {
+        var pdfHelper = new PdfHelper();
+        byte[] pdfContent = pdfHelper.CreatePdf("Bu bir test PDF'sidir!");
+
+        var fileName = "generated.pdf";
+        var base64Pdf = Convert.ToBase64String(pdfContent);
+        var dataUri = $"data:application/pdf;base64,{base64Pdf}";
+
+        await JSRuntime.InvokeVoidAsync("downloadFile", fileName, dataUri);
+    }
+}
