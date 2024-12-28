@@ -7,66 +7,74 @@
 
 <h3>@(IsEditMode ? "Makbuz Güncelle" : "Yeni Makbuz Ekle")</h3>
 
-<div class="form-group">
-    <label for="makbuzNo">Makbuz No</label>
-    <input type="number" id="makbuzNo" class="form-control" @bind="Makbuz.MakbuzNo" />
-</div>
-<div class="form-group">
-    <label for="ad">Adı</label>
-    <input type="text" id="ad" class="form-control" @bind="Makbuz.Ad" />
-</div>
-<div class="form-group">
-    <label for="soyad">Soyadı</label>
-    <input type="text" id="soyad" class="form-control" @bind="Makbuz.Soyad" />
-</div>
-<div class="form-group">
-    <label for="daireNo">Daire No</label>
-    <input type="text" id="daireNo" class="form-control" @bind="Makbuz.DaireNo" />
-</div>
+<EditForm Model="Makbuz" OnValidSubmit="SaveMakbuz">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
 
-<div class="form-group">
-    <label for="blok">Blok Adı</label>
-    <select id="blok" class="form-control" @onchange="OnBlokChanged">
-        <option value="">Blok Seçin</option>
-        @foreach (var blok in BlokListesi)
-        {
-            <option value="@blok.Id">@blok.BlokName</option>
-        }
-    </select>
-</div>
-<div class="form-group">
-    <label for="aidatDonemi">Aidat Dönemi</label>
-    <input type="date" id="aidatDonemi" class="form-control" @bind="Makbuz.AidatDonemi" />
-</div>
-<div class="form-group">
-    <label for="aidatTutari">Aidat Tutarı</label>
-    <input type="number" id="aidatTutari" class="form-control" @bind="Makbuz.AidatTutari" />
-</div>
-<div class="form-group">
-    <label for="demirbasDonemi">Demirbaş Dönemi</label>
-    <input type="date" id="demirbasDonemi" class="form-control" @bind="Makbuz.Demirbasonemi" />
-</div>
-<div class="form-group">
-    <label for="demirbasTutari">Demirbaş Tutarı</label>
-    <input type="number" id="demirbasTutari" class="form-control" @bind="Makbuz.DemirbasTutari" />
-</div>
-<div class="form-group">
-    <label for="toplamTutar">Toplam Tutar</label>
-    <input type="number" id="toplamTutar" class="form-control" @bind="Makbuz.ToplamTutar" />
-</div>
-<div class="form-group form-check-inline">
-    <div class="form-check">
-        <input type="checkbox" id="banka" class="form-check-input" @bind="Makbuz.Banka" />
-        <label class="form-check-label" for="banka">Banka mı?</label>
+    <div class="form-group">
+        <label for="makbuzNo">Makbuz No</label>
+        <input type="number" id="makbuzNo" class="form-control" @bind="Makbuz.MakbuzNo" />
+        <ValidationMessage For="@(() => Makbuz.MakbuzNo)" />
     </div>
-    <div class="form-check">
-        <input type="checkbox" id="nakit" class="form-check-input" @bind="Makbuz.Nakit" />
-        <label class="form-check-label" for="nakit">Nakit mi?</label>
+    <div class="form-group">
+        <label for="ad">Adı</label>
+        <input type="text" id="ad" class="form-control" @bind="Makbuz.Ad" />
+        <ValidationMessage For="@(() => Makbuz.Ad)" />
     </div>
-</div>
-
-<button class="btn btn-primary" @onclick="SaveMakbuz">@(IsEditMode ? "Güncelle" : "Ekle")</button>
-<button class="btn btn-secondary" @onclick="Cancel">İptal</button>
+    <div class="form-group">
+        <label for="soyad">Soyadı</label>
+        <input type="text" id="soyad" class="form-control" @bind="Makbuz.Soyad" />
+        <ValidationMessage For="@(() => Makbuz.Soyad)" />
+    </div>
+    <div class="form-group">
+        <label for="daireNo">Daire No</label>
+        <input type="text" id="daireNo" class="form-control" @bind="Makbuz.DaireNo" />
+        <ValidationMessage For="@(() => Makbuz.DaireNo)" />
+    </div>
+    <div class="form-group">
+        <label for="blok">Blok Adı</label>
+        <select id="blok" class="form-control" @bind="Makbuz.BlokId">
+            <option value="">Blok Seçin</option>
+            @foreach (var blok in BlokListesi)
+            {
+                <option value="@blok.Id">@blok.BlokName</option>
+            }
+        </select>
+        <ValidationMessage For="@(() => Makbuz.BlokId)" />
+    </div>
+    <div class="form-group">
+        <label for="aidatDonemi">Aidat Dönemi</label>
+        <input type="date" id="aidatDonemi" class="form-control" @bind="Makbuz.AidatDonemi" />
+        <ValidationMessage For="@(() => Makbuz.AidatDonemi)" />
+    </div>
+    <div class="form-group">
+        <label for="aidatTutari">Aidat Tutarı</label>
+        <input type="number" id="aidatTutari" class="form-control" @bind="Makbuz.AidatTutari" />
+        <ValidationMessage For="@(() => Makbuz.AidatTutari)" />
+    </div>
+    <div class="form-group">
+        <label for="demirbasDonemi">Demirbaş Dönemi</label>
+        <input type="date" id="demirbasDonemi" class="form-control" @bind="Makbuz.Demirbasonemi" />
+        <ValidationMessage For="@(() => Makbuz.Demirbasonemi)" />
+    </div>
+    <div class="form-group">
+        <label for="demirbasTutari">Demirbaş Tutarı</label>
+        <input type="number" id="demirbasTutari" class="form-control" @bind="Makbuz.DemirbasTutari" />
+        <ValidationMessage For="@(() => Makbuz.DemirbasTutari)" />
+    </div>
+    <div class="form-group">
+        <label for="demirbasTutari">Aidat Faiz Tutarı</label>
+        <input type="number" id="demirbasTutari" class="form-control" @bind="Makbuz.AidatFaizTutari" />
+        <ValidationMessage For="@(() => Makbuz.AidatFaizTutari)" />
+    </div>
+    <div class="form-group">
+        <label for="demirbasTutari">Toplam Tutar</label>
+        <input type="number" id="demirbasTutari" class="form-control" @bind="Makbuz.ToplamTutar" />
+        <ValidationMessage For="@(() => Makbuz.ToplamTutar)" />
+    </div>
+    <button class="btn btn-primary" type="submit">@(IsEditMode ? "Güncelle" : "Ekle")</button>
+    <button class="btn btn-secondary" @onclick="Cancel">İptal</button>
+</EditForm>
 
 @code {
     [Parameter] public int? Id { get; set; }

@@ -1,23 +1,52 @@
 ﻿@inject AuthenticationService AuthService
 @inject NavigationManager NavigationManager
 @using Microsoft.AspNetCore.Components
-@using SiteYonetimAppServer.Services;
+@using SiteYonetimAppServer.Services
 @page "/login"
-@if (AuthService.IsLoggedIn)
-{
-    <h3>Hoş Geldiniz, @AuthService.CurrentUser.UserName!</h3>
-    <button @onclick="Logout">Çıkış Yap</button>
-}
-else
-{
-    <h3>Giriş Yap</h3>
-    <EditForm Model="@loginModel" OnValidSubmit="HandleLogin">
-        <InputText @bind-Value="loginModel.UserName" placeholder="Kullanıcı Adı" />
-        <InputText @bind-Value="loginModel.Password" type="password" placeholder="Şifre" />
-        <button type="submit">Giriş Yap</button>
-    </EditForm>
-}
 
+<div class="login-container d-flex align-items-center justify-content-center vh-100">
+    @if (AuthService.IsLoggedIn)
+    {
+        <div class="text-center">
+            <h3>Hoş Geldiniz, <strong>@AuthService.CurrentUser.UserName</strong>!</h3>
+            <button class="btn btn-danger mt-3" @onclick="Logout">Çıkış Yap</button>
+        </div>
+    }
+    else
+    {
+        <div class="card shadow-lg p-4" style="width: 100%; max-width: 400px;">
+            <h3 class="text-center mb-4">Giriş Yap</h3>
+            <EditForm Model="@loginModel" OnValidSubmit="HandleLogin">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <div class="form-group mb-3">
+                    <label for="username">Kullanıcı Adı</label>
+                    <InputText id="username" class="form-control" @bind-Value="loginModel.UserName" placeholder="Kullanıcı Adı" />
+                </div>
+                <div class="form-group mb-3">
+                    <label for="password">Şifre</label>
+                    <InputText id="password" type="password" class="form-control" @bind-Value="loginModel.Password" placeholder="Şifre" />
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Giriş Yap</button>
+            </EditForm>
+        </div>
+    }
+</div>
+<style>
+    .login-container {
+        background: linear-gradient(120deg, #f6d365, #fda085);
+        height: 100vh;
+        width: 100vw;
+        overflow: hidden;
+    }
+
+    .card {
+        border-radius: 12px;
+        background: #fff;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+</style>
 @code {
     private LoginModel loginModel = new LoginModel();
 
