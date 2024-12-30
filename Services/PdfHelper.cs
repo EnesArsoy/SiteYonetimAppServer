@@ -77,7 +77,7 @@ namespace SiteYonetimAppServer.Services
                 yPos += lineSpacing;
                 // Aidat Dönemi ve Tutar
                 // Aidat Dönemi ve Tutarı yan yana
-                gfx.DrawString($"Aidat Dönemi: {makbuz?.AidatDonemi.ToString("dd.MM.yyyy")}                 Tutarı: {makbuz?.AidatTutari:C}", regularFont, XBrushes.Black, new XPoint(xPos, yPos));
+                gfx.DrawString($"Aidat Dönemi: {makbuz.AidatDonemi.Value.ToString("dd.MM.yyyy")}                 Tutarı: {makbuz?.AidatTutari:C}", regularFont, XBrushes.Black, new XPoint(xPos, yPos));
                 yPos += lineSpacing;
                 yPos += lineSpacing;
 

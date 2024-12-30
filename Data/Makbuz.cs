@@ -20,10 +20,10 @@ namespace SiteYonetimApp.Models
         public int? BlokId { get; set; }
 
         [Required(ErrorMessage = "Aidat Dönemi seçilmelidir.")]
-        public DateTime AidatDonemi { get; set; }
+        public DateTime? AidatDonemi { get; set; }
 
         [Required(ErrorMessage = "Aidat Tutarı boş bırakılamaz.")]
-        public decimal AidatTutari { get; set; }
+        public decimal? AidatTutari { get; set; }
 
         public DateTime? Demirbasonemi { get; set; }
         public decimal? DemirbasTutari { get; set; }   
