@@ -39,6 +39,7 @@ namespace SiteYonetimApp.Models
         public string OdemeyiAlanAd { get; set; }
         public string OdemeyiAlanSoyad { get; set; }
         public string OdemeyiAlanImza { get; set; }
+        public DateTime? TahsilatTarih { get; set; }
 
     }
 }

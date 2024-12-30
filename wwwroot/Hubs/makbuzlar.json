@@ -21,7 +21,8 @@
     "Nakit": true,
     "OdemeyiAlanAd": "Nurol",
     "OdemeyiAlanSoyad": "Balc\u0131",
-    "OdemeyiAlanImza": "nurol.balci"
+    "OdemeyiAlanImza": "nurol.balci",
+    "TahsilatTarih": "2024-12-28T00:00:00"
   },
   {
     "Id": 3,
@@ -45,7 +46,8 @@
     "Nakit": true,
     "OdemeyiAlanAd": "Kemal",
     "OdemeyiAlanSoyad": "\uFFFDzt\uFFFDrk",
-    "OdemeyiAlanImza": "K.\uFFFDzt\uFFFDrk"
+    "OdemeyiAlanImza": "K.\uFFFDzt\uFFFDrk",
+    "TahsilatTarih": "2024-12-28T00:00:00"
   },
   {
     "Id": 2,
@@ -69,7 +71,8 @@
     "Nakit": false,
     "OdemeyiAlanAd": "Ali",
     "OdemeyiAlanSoyad": "Demir",
-    "OdemeyiAlanImza": "A.Demir"
+    "OdemeyiAlanImza": "A.Demir",
+    "TahsilatTarih": "2024-12-28T00:00:00"
   },
   {
     "Id": 1,
@@ -93,6 +96,7 @@
     "Nakit": false,
     "OdemeyiAlanAd": "Nurol",
     "OdemeyiAlanSoyad": "Balc\u0131",
-    "OdemeyiAlanImza": "nurol.balci"
+    "OdemeyiAlanImza": "nurol.balci",
+    "TahsilatTarih": "2024-12-28T00:00:00"
   }
 ]

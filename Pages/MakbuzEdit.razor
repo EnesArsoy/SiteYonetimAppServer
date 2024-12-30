@@ -72,6 +72,27 @@
         <input type="number" id="demirbasTutari" class="form-control" @bind="Makbuz.ToplamTutar" />
         <ValidationMessage For="@(() => Makbuz.ToplamTutar)" />
     </div>
+    <div class="form-group">
+        <label for="ad">Ödeme Alan Ad</label>
+        <input type="text" id="ad" class="form-control" @bind="Makbuz.OdemeyiAlanAd" />        
+    </div>
+    <div class="form-group">
+        <label for="soyad">Ödeme Alan Soyad</label>
+        <input type="text" id="soyad" class="form-control" @bind="Makbuz.OdemeyiAlanSoyad" />        
+    </div>
+    <div class="form-group">
+        <label for="odemeYontemi">Ödeme Yöntemi</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <div>
+                <input type="checkbox" id="odemeBanka" @bind="Makbuz.Banka" />
+                <label for="odemeBanka">Banka</label>
+            </div>
+            <div>
+                <input type="checkbox" id="odemeNakit" @bind="Makbuz.Nakit" />
+                <label for="odemeNakit">Nakit</label>
+            </div>
+        </div>      
+    </div>
     <button class="btn btn-primary" type="submit">@(IsEditMode ? "Güncelle" : "Ekle")</button>
     <button class="btn btn-secondary" @onclick="Cancel">İptal</button>
 </EditForm>
@@ -100,8 +121,8 @@
     private async Task SaveMakbuz()
     {
         Makbuz.Blok = BlokListesi.FirstOrDefault(b => b.Id == Makbuz.BlokId);
-        Makbuz.OdemeyiAlanAd = "Nurol";
-        Makbuz.OdemeyiAlanSoyad = "Balcı";
+        Makbuz.OdemeyiAlanAd = Makbuz.OdemeyiAlanAd==null?"Nurol":Makbuz.OdemeyiAlanAd;
+        Makbuz.OdemeyiAlanSoyad = Makbuz.OdemeyiAlanSoyad==null? "Balcı":Makbuz.OdemeyiAlanSoyad;
         Makbuz.TahsilEtmeText = "Tahsil Edilmiştir";
         Makbuz.OdemeyiAlanImza = "nurol.balci";
         if (IsEditMode)

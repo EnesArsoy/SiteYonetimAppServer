@@ -72,6 +72,9 @@ namespace SiteYonetimAppServer.Services
                 yPos += lineSpacing;
                 yPos += lineSpacing;
 
+                gfx.DrawString($"Tahsilat Tarih: {makbuz.TahsilatTarih.Value.ToString("dd.MM.yyyy")}", regularFont, XBrushes.Black, new XPoint(xPos, yPos));
+                yPos += lineSpacing;
+                yPos += lineSpacing;
                 // Aidat Dönemi ve Tutar
                 // Aidat Dönemi ve Tutarı yan yana
                 gfx.DrawString($"Aidat Dönemi: {makbuz?.AidatDonemi.ToString("dd.MM.yyyy")}                 Tutarı: {makbuz?.AidatTutari:C}", regularFont, XBrushes.Black, new XPoint(xPos, yPos));
@@ -110,14 +113,25 @@ namespace SiteYonetimAppServer.Services
 
                 // İmza Alanı
                 gfx.DrawString("İmza:", boldFont, XBrushes.Black, new XPoint(xPos, yPos));
-                yPos += lineSpacing;               
-                gfx.DrawString(makbuz?.OdemeyiAlanImza, regularFont, XBrushes.Black, new XPoint(xPos, yPos));
+                yPos += lineSpacing;
+                yPos += lineSpacing; // Biraz boşluk bırakıyoruz
+                // İmza Görselini Ekliyoruz
+                string imzaPath = "wwwroot/OzferahImza.png";        
+                if (File.Exists(imzaPath))
+                {
+                    XImage imzaImage = XImage.FromFile(imzaPath);
+                    double imzaWidth = 100; // İmzanın genişliği (pixel cinsinden)
+                    double imzaHeight = imzaImage.PixelHeight * imzaWidth / imzaImage.PixelWidth; // Oranlı yükseklik
+
+                    gfx.DrawImage(imzaImage, xPos, yPos, imzaWidth, imzaHeight);
+                }
+
 
 
                 // Alt kısımda ortalanmış metin
                 string footerText = "Not: Aidatlar her ayın 01-20'i arasında tahsil edilecektir. Ödemeyi zamanında yapmayanlardan KMK 20/C maddesi gereği %5 Geciktirme tazminatı ile masraf ve vekalet ücreti alınacaktır. Bilginize sunulur";
                 double footerXPos = (pageWidth - gfx.MeasureString(footerText, regularFont).Width) / 2;
-                double footerYPos = pageHeight - 350; // Sayfanın alt kısmına yakın bir konum
+                double footerYPos = pageHeight - 100; // Sayfanın alt kısmına yakın bir konum
 
                 // Metni satırlara bölme
                 XTextFormatter tf = new XTextFormatter(gfx);
