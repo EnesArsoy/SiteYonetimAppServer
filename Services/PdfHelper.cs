@@ -33,6 +33,7 @@ namespace SiteYonetimAppServer.Services
         {
             try
             {
+                System.Globalization.CultureInfo.DefaultThreadCurrentCulture = new System.Globalization.CultureInfo("tr-TR");
                 // Yeni bir PDF belgesi oluşturuyoruz.
                 PdfDocument document = new PdfDocument();
                 PdfPage page = document.AddPage();
@@ -76,21 +77,25 @@ namespace SiteYonetimAppServer.Services
                 yPos += lineSpacing;
                 yPos += lineSpacing;
                 // Aidat Dönemi ve Tutar
-                // Aidat Dönemi ve Tutarı yan yana
-                gfx.DrawString($"Aidat Dönemi: {makbuz.AidatDonemi.Value.ToString("dd.MM.yyyy")}                 Tutarı: {makbuz?.AidatTutari:C}", regularFont, XBrushes.Black, new XPoint(xPos, yPos));
+                gfx.DrawString($"Aidat Dönemi: {makbuz.AidatDonemiString}                 Tutarı: {makbuz?.AidatTutari?.ToString("C", new System.Globalization.CultureInfo("tr-TR"))}", regularFont, XBrushes.Black, new XPoint(xPos, yPos));
                 yPos += lineSpacing;
                 yPos += lineSpacing;
 
+
                 // Demirbaş Dönemi ve Tutar
                 // Demirbaş Dönemi ve Tutarı yan yana
-                gfx.DrawString($"Demirbaş Dönemi: {makbuz?.Demirbasonemi?.ToString("dd.MM.yyyy")}           Tutarı: {makbuz?.DemirbasTutari:C}", regularFont, XBrushes.Black, new XPoint(xPos, yPos));
-                yPos += lineSpacing;
-                yPos += lineSpacing;
+                if (makbuz.Demirbasonemi.HasValue)
+                {
+                    gfx.DrawString($"Demirbaş Dönemi: {makbuz?.Demirbasonemi?.ToString("dd.MM.yyyy")}           Tutarı: {makbuz?.DemirbasTutari?.ToString("C", new System.Globalization.CultureInfo("tr-TR"))}", regularFont, XBrushes.Black, new XPoint(xPos, yPos));
+                    yPos += lineSpacing;
+                    yPos += lineSpacing;
+                }
+                
 
                 // Faiz Tutarı
                 if (makbuz.AidatFaizTutari.HasValue)
                 {
-                    gfx.DrawString($"Aidat Faiz Tutarı:                               {makbuz?.AidatFaizTutari:C}", regularFont, XBrushes.Black, new XPoint(xPos, yPos));
+                    gfx.DrawString($"Aidat Faiz Tutarı:                               {makbuz?.AidatFaizTutari?.ToString("C", new System.Globalization.CultureInfo("tr-TR"))}", regularFont, XBrushes.Black, new XPoint(xPos, yPos));
                     yPos += lineSpacing;
                     yPos += lineSpacing;
                 }
@@ -107,7 +112,7 @@ namespace SiteYonetimAppServer.Services
                 yPos += lineSpacing;
 
                 // Ödemeyi Alan Bilgileri
-                gfx.DrawString($"Ödemeyi Alan: {makbuz?.OdemeyiAlanAd} {makbuz?.OdemeyiAlanSoyad}", regularFont, XBrushes.Black, new XPoint(xPos, yPos));
+                gfx.DrawString($"Ödemeyi Alan: {makbuz?.OdemeyiAlanImza}", regularFont, XBrushes.Black, new XPoint(xPos, yPos));
                 yPos += lineSpacing;
                 yPos += lineSpacing;
 
@@ -120,7 +125,7 @@ namespace SiteYonetimAppServer.Services
                 if (File.Exists(imzaPath))
                 {
                     XImage imzaImage = XImage.FromFile(imzaPath);
-                    double imzaWidth = 100; // İmzanın genişliği (pixel cinsinden)
+                    double imzaWidth = 120; // İmzanın genişliği (pixel cinsinden)
                     double imzaHeight = imzaImage.PixelHeight * imzaWidth / imzaImage.PixelWidth; // Oranlı yükseklik
 
                     gfx.DrawImage(imzaImage, xPos, yPos, imzaWidth, imzaHeight);

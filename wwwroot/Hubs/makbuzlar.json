@@ -1,94 +1,20 @@
 [
   {
     "Id": 1,
-    "MakbuzNo": "001100",
-    "DaireNo": "12",
-    "BlokId": 2,
-    "Blok": {
-      "Id": 2,
-      "BlokName": "Ozferah B2"
-    },
-    "Ad": "Enes",
-    "Soyad": "Ar\u0131soy",
-    "AidatDonemi": "2024-12-26T00:00:00",
-    "AidatTutari": 1000,
-    "Demirbasonemi": "2024-02-01T00:00:00",
-    "DemirbasTutari": 0.00,
-    "AidatFaizTutari": 0.00,
-    "ToplamTutar": 1000.00,
-    "TahsilEtmeText": "Tahsil Edilmi\u015Ftir",
-    "Banka": false,
-    "Nakit": true,
-    "OdemeyiAlanAd": "Nurol",
-    "OdemeyiAlanSoyad": "Balc\u0131",
-    "OdemeyiAlanImza": "nurol.balci",
-    "TahsilatTarih": "2024-12-28T00:00:00"
-  },
-  {
-    "Id": 3,
-    "MakbuzNo": "1003",
-    "DaireNo": "17",
-    "BlokId": 3,
-    "Blok": {
-      "Id": 3,
-      "BlokName": "Ozferah B3"
-    },
-    "Ad": "Mehmet",
-    "Soyad": "Arslan",
-    "AidatDonemi": "2024-03-01T00:00:00",
-    "AidatTutari": 350.00,
-    "Demirbasonemi": "2024-03-01T00:00:00",
-    "DemirbasTutari": 600.00,
-    "AidatFaizTutari": 35.00,
-    "ToplamTutar": 985.00,
-    "TahsilEtmeText": "Nakit \uFFFDdeme olarak tahsil edilmistir.",
-    "Banka": false,
-    "Nakit": true,
-    "OdemeyiAlanAd": "Kemal",
-    "OdemeyiAlanSoyad": "\uFFFDzt\uFFFDrk",
-    "OdemeyiAlanImza": "K.\uFFFDzt\uFFFDrk",
-    "TahsilatTarih": "2024-12-28T00:00:00"
-  },
-  {
-    "Id": 2,
-    "MakbuzNo": "1002",
-    "DaireNo": "16",
-    "BlokId": 2,
-    "Blok": {
-      "Id": 2,
-      "BlokName": "Ozferah B2"
-    },
-    "Ad": "Ayse",
-    "Soyad": "Celik",
-    "AidatDonemi": "2024-02-01T00:00:00",
-    "AidatTutari": 300.00,
-    "Demirbasonemi": "2024-02-01T00:00:00",
-    "DemirbasTutari": 750.00,
-    "AidatFaizTutari": 30.00,
-    "ToplamTutar": 1080.00,
-    "TahsilEtmeText": "Banka transferi ile tahsil edilmistir.",
-    "Banka": true,
-    "Nakit": false,
-    "OdemeyiAlanAd": "Ali",
-    "OdemeyiAlanSoyad": "Demir",
-    "OdemeyiAlanImza": "A.Demir",
-    "TahsilatTarih": "2024-12-28T00:00:00"
-  },
-  {
-    "Id": 1,
     "MakbuzNo": "002035",
-    "DaireNo": "12",
-    "BlokId": 2,
-    "Blok": {
-      "Id": 2,
-      "BlokName": "Ozferah B2"
-    },
     "Ad": "Unsal",
     "Soyad": "Arisoy",
+    "DaireNo": "12",
+    "BlokId": 2,
     "AidatDonemi": "2024-12-28T00:00:00",
+    "AidatDonemiString": "EYLUL",
     "AidatTutari": 900,
     "Demirbasonemi": null,
     "DemirbasTutari": null,
+    "Blok": {
+      "Id": 2,
+      "BlokName": "Ozferah B2"
+    },
     "AidatFaizTutari": null,
     "ToplamTutar": 900,
     "TahsilEtmeText": "Tahsil Edilmi\u015Ftir",
@@ -96,7 +22,33 @@
     "Nakit": false,
     "OdemeyiAlanAd": "Nurol",
     "OdemeyiAlanSoyad": "Balc\u0131",
-    "OdemeyiAlanImza": "nurol.balci",
+    "OdemeyiAlanImza": "\u00D6zferah Sitesi B2 B3 BLOK Y\u00D6NET\u0130M\u0130",
     "TahsilatTarih": "2024-12-28T00:00:00"
+  },
+  {
+    "Id": 2,
+    "MakbuzNo": "00999",
+    "Ad": "ENES",
+    "Soyad": "ARISOY",
+    "DaireNo": "12",
+    "BlokId": 2,
+    "AidatDonemi": null,
+    "AidatDonemiString": "OCAK",
+    "AidatTutari": 1000,
+    "Demirbasonemi": null,
+    "DemirbasTutari": null,
+    "Blok": {
+      "Id": 2,
+      "BlokName": "Ozferah B2"
+    },
+    "AidatFaizTutari": null,
+    "ToplamTutar": 1000,
+    "TahsilEtmeText": "Tahsil Edilmi\u015Ftir",
+    "Banka": true,
+    "Nakit": false,
+    "OdemeyiAlanAd": "NUROL",
+    "OdemeyiAlanSoyad": "BALCI",
+    "OdemeyiAlanImza": "\u00D6zferah Sitesi B2 B3 BLOK Y\u00D6NET\u0130M\u0130",
+    "TahsilatTarih": "2025-01-02T00:00:00"
   }
 ]

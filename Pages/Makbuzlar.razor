@@ -42,11 +42,11 @@
                         <td>@makbuz.DaireNo</td>
                         <td>@makbuz.ToplamTutar</td>
                         <td>@makbuz?.Blok?.BlokName</td>
-                        <td>@makbuz.AidatDonemi</td>
+                        <td>@makbuz.AidatDonemiString</td>
                         <td>@makbuz.AidatTutari</td>
                         <td>@makbuz.Demirbasonemi</td>
-                        <td>@makbuz.DemirbasTutari}</td>
-                        <td>@makbuz.TahsilatTarih}</td>
+                        <td>@makbuz.DemirbasTutari</td>
+                        <td>@makbuz.TahsilatTarih</td>
                         <td>@makbuz.Banka</td>
                         <td>@makbuz.Nakit</td>
                         <td>
@@ -72,6 +72,7 @@
     protected override async Task OnInitializedAsync()
     {
         await CheckUser();
+        System.Globalization.CultureInfo.DefaultThreadCurrentCulture = new System.Globalization.CultureInfo("tr-TR");
         await LoadMakbuzlar();
     }
 

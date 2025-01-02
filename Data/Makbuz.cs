@@ -18,9 +18,9 @@ namespace SiteYonetimApp.Models
         [Required(ErrorMessage = "Daire No boş bırakılamaz.")]
         public string DaireNo { get; set; }      
         public int? BlokId { get; set; }
-
-        [Required(ErrorMessage = "Aidat Dönemi seçilmelidir.")]
         public DateTime? AidatDonemi { get; set; }
+        [Required(ErrorMessage = "Aidat Dönemi Girilmelidir.")]
+        public string? AidatDonemiString { get; set; }
 
         [Required(ErrorMessage = "Aidat Tutarı boş bırakılamaz.")]
         public decimal? AidatTutari { get; set; }
@@ -39,6 +39,7 @@ namespace SiteYonetimApp.Models
         public string OdemeyiAlanAd { get; set; }
         public string OdemeyiAlanSoyad { get; set; }
         public string OdemeyiAlanImza { get; set; }
+        [Required(ErrorMessage = "Tahsilat Tarih boş bırakılamaz.")]
         public DateTime? TahsilatTarih { get; set; }
 
     }
