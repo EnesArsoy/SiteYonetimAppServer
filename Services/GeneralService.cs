@@ -121,7 +121,7 @@ namespace SiteYonetimApp.Services
             {
                 var json = await File.ReadAllTextAsync(MakbuzlarFilePath);
                 var makbuzlar = JsonSerializer.Deserialize<List<Makbuz>>(json);
-                makbuzlar = makbuzlar.OrderByDescending(x => x.AidatDonemi).ToList();
+                makbuzlar = makbuzlar.OrderByDescending(x => x.Id).ToList();
                 return makbuzlar ?? new List<Makbuz>();
             }
             catch (Exception ex)
